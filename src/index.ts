@@ -1,17 +1,21 @@
-import express from 'express'
+import express from "express";
+import { requestLogger } from "./middleware/logger.js";
+import rootRouter from "./routes/root.js";
+import usersRouter from "./routes/users.js";
+import postsRouter from "./routes/posts.js";
+import healthRoutes from "./routes/health.js";
+import authRoutes from "./routes/auth.js";
 
-const app = express()
+export const app = express();
 
-app.get('/', (_req, res) => {
-  res.send('Hello Express!')
-})
+app.set("trust proxy", true);
+app.use(express.json());
+app.use(requestLogger);
 
-app.get('/api/users/:id', (_req, res) => {
-  res.json({ id: _req.params.id })
-})
+app.use(rootRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/posts", postsRouter);
+app.use(healthRoutes);
+app.use(authRoutes);
 
-app.get('/api/posts/:postId/comments/:commentId', (_req, res) => {
-  res.json({ postId: _req.params.postId, commentId: _req.params.commentId })
-})
-
-export default app
+export default app;
