@@ -1,3 +1,5 @@
+import { parseNumberEnv } from "./env";
+
 export function isValidEmail(email: string) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return false;
@@ -8,8 +10,6 @@ export function isValidEmail(email: string) {
   }
   return !local.includes("..") && !domain.includes("..");
 }
-
-import { parseNumberEnv } from "./env";
 
 export const PASSWORD_MIN_LENGTH = parseNumberEnv("PASSWORD_MIN_LENGTH", 8);
 
